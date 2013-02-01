@@ -1,0 +1,5 @@
+.DS_Store
+.vagrant
+sites/[^.]*
+db_import/.imported
+db_import/[^.]*
