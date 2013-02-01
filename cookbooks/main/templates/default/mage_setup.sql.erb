@@ -1,0 +1,30 @@
+UPDATE core_config_data SET value = "<%=node['mage_unsecure_hostname']%>" WHERE path = "web/unsecure/base_url" OR path = "web/secure/base_url";
+UPDATE core_config_data SET value = "<%=node['mage_secure_hostname']%>" WHERE path = "web/secure/base_url" OR path = "web/secure/base_url";
+UPDATE core_config_data SET value = ".<%=node['mage_hostname']%>" WHERE path = "web/cookie/cookie_domain";
+
+INSERT INTO admin_user
+(`user_id`, `firstname`, `lastname`, `email`, `username`, `password`, `created`, `modified`, `logdate`, `lognum`, `reload_acl_flag`, `is_active`, `extra`)
+(SELECT
+NULL user_id,
+"<%=node['magento']['admin_user']['firstname']%>",
+"<%=node['magento']['admin_user']['lastname']%>",
+"<%=node['magento']['admin_user']['email']%>",
+"<%=node['magento']['admin_user']['username']%>",
+CONCAT(MD5('kr<%=node['magento']['admin_user']['password']%>'), ':kr'),
+NOW(),
+NULL,
+NULL,
+0,
+0,
+1,
+(SELECT MAX(extra) FROM admin_user WHERE extra IS NOT NULL) );
+
+INSERT into admin_role
+SELECT
+NULL role_id,
+(SELECT role_id FROM admin_role WHERE role_name = 'Administrators') parent_id,
+2 tree_level,
+0 sort_order,
+'U' role_type,
+(SELECT user_id FROM admin_user WHERE username = '<%=node['magento']['admin_user']['username']%>') user_id,
+'<%=node['magento']['admin_user']['username']%>' role_name;
