@@ -44,7 +44,7 @@ uncomment the line:
  
  in the Vagrantfile for better performance
  
-### example
+### example with sample data
 
 setup a new magento:
 
@@ -58,10 +58,6 @@ and extract to {app_dir}/sites/default
 
 	vagrant up
  
- 
- 
-	
+### hint for starting from production Magento db
 
-
-	
-
+Checkout the [wiki](https://github.com/kaminrunde/vagrant-chef-magento/wiki) for sql statement to clean production Magento from customer data.
